@@ -55,3 +55,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 Scripts modified from Czech WMS layers:
 - Authors: petrjanik, d2-mac, MajkiiTelini
+
+[GitHub repository](https://github.com/JS55CT/WME-Croatian-WMS-Map).
