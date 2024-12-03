@@ -2,7 +2,7 @@
 // @name             Croatian WMS layers
 // @namespace        https://greasyfork.org/en/users/1366579-js55ct
 // @description      Displays layers from Croatian WMS services in WME
-// @version          2024.12.03.00
+// @version          2024.12.03.02
 // @author           JS55CT
 // @match            https://*.waze.com/*/editor*
 // @match            https://*.waze.com/editor
@@ -24,7 +24,7 @@ var ZIndexes = {};
 
 const scriptMetadata = GM_info.script;
 const scriptName = scriptMetadata.name;
-const debug = true;
+const debug = false;
 
 function init(e) {
   if (debug) console.log(`${scriptName}: Croatian WMS layers Script Started......`);
