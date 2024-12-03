@@ -1,20 +1,21 @@
 // ==UserScript==
-// @name		     Croatian WMS layers
+// @name             Croatian WMS layers
 // @namespace        https://greasyfork.org/en/users/1366579-js55ct
-// @description	     Displays layers from Croatian WMS services in WME
-// @version		     2024.12.03.00
-// @author		     JS55CT
+// @description      Displays layers from Croatian WMS services in WME
+// @version          2024.12.03.00
+// @author           JS55CT
 // @match            https://*.waze.com/*/editor*
 // @match            https://*.waze.com/editor
 // @exclude          https://*.waze.com/user/editor*
-// @downloadURL      
-// @updateURL
+// @downloadURL      https://update.greasyfork.org/scripts/519676/Croatian%20WMS%20layers.user.js
+// @updateURL        https://update.greasyfork.org/scripts/519676/Croatian%20WMS%20layers.user.js
 // @grant            unsafeWindow
-// @license          MIT        
+// @license          MIT
 // ==/UserScript==
 
-
 /*  Scripts modified from Czech WMS layers (https://greasyfork.org/cs/scripts/35069-czech-wms-layers) orgianl authors: petrjanik, d2-mac, MajkiiTelini */
+
+(function () {
 
 var W;
 var OL;
@@ -23,9 +24,11 @@ var ZIndexes = {};
 
 const scriptMetadata = GM_info.script;
 const scriptName = scriptMetadata.name;
-
+const debug = true;
 
 function init(e) {
+  if (debug) console.log(`${scriptName}: Croatian WMS layers Script Started......`);
+
   W = unsafeWindow.W;
   OL = unsafeWindow.OpenLayers;
   I18n = unsafeWindow.I18n;
@@ -71,50 +74,48 @@ function init(e) {
     tileSize: new OL.Size(512, 512),
   };
 
-
   var serviceCadastralZoning = {
     type: "WMS",
     url: "https://api.uredjenazemlja.hr/services/inspire/cp_wms/wms",
     params: {
-        SERVICE: "WMS",
-        VERSION: "1.3.0",
-        REQUEST: "GetMap",
-        FORMAT: "image/png",
-        TRANSPARENT: "true",
-        LAYERS: "CP.CadastralZoning",
-        CRS: "EPSG:3765", //"EPSG:4326", // Defaulting to EPSG:4326 as indicated
-        STYLES: "CP.CadastralZoning.Default",
+      SERVICE: "WMS",
+      VERSION: "1.3.0",
+      REQUEST: "GetMap",
+      FORMAT: "image/png",
+      TRANSPARENT: "true",
+      LAYERS: "CP.CadastralZoning",
+      CRS: "EPSG:3765", //"EPSG:4326", // Defaulting to EPSG:4326 as indicated
+      STYLES: "CP.CadastralZoning.Default",
     },
     attribution: "Katastarske čestice i katastarske općine - WMS",
     tileSize: new OL.Size(512, 512),
-};
+  };
 
-// Define the service information for CP.CadastralParcel
-var serviceCadastralParcel = {
+  // Define the service information for CP.CadastralParcel
+  var serviceCadastralParcel = {
     type: "WMS",
     url: "https://api.uredjenazemlja.hr/services/inspire/cp_wms/wms",
     params: {
-        SERVICE: "WMS",
-        VERSION: "1.3.0",
-        REQUEST: "GetMap",
-        FORMAT: "image/png",
-        TRANSPARENT: "true",
-        LAYERS: "CP.CadastralParcel",
-        CRS: "EPSG:3765", //"EPSG:4326", // Defaulting to EPSG:4326 as indicated
-        STYLES: "CP.CadastralParcel.Default",
+      SERVICE: "WMS",
+      VERSION: "1.3.0",
+      REQUEST: "GetMap",
+      FORMAT: "image/png",
+      TRANSPARENT: "true",
+      LAYERS: "CP.CadastralParcel",
+      CRS: "EPSG:3765", //"EPSG:4326", // Defaulting to EPSG:4326 as indicated
+      STYLES: "CP.CadastralParcel.Default",
     },
     attribution: "Katastarske čestice i katastarske općine - WMS",
     tileSize: new OL.Size(512, 512),
-};
-
+  };
 
   //menu
   var WMSLayerTogglers = {};
   // Add WMS layers
-  WMSLayerTogglers.wms_hok5 = addLayerToggler(groupTogglerHRV, "Base Map (HOK5)", [addNewLayer("Croatia:wms_hok5", service_wms_hok, ZIndexes.base , 1.0 )]);
-  WMSLayerTogglers.wms_orthophoto = addLayerToggler(groupTogglerHRV, "Orthophoto 2014-16", [addNewLayer("Croatia:wms_orthophoto", service_wms_orthophoto , ZIndexes.base , 0.5 )]);
-  WMSLayerTogglers.wms_orthophoto = addLayerToggler(groupTogglerHRV, "Cadastral Zoning", [addNewLayer("Croatia:wms_cadastralZoning", serviceCadastralZoning , ZIndexes.overlay , 1.0 )]);
-  WMSLayerTogglers.wms_orthophoto = addLayerToggler(groupTogglerHRV, "Cadastral Parcels", [addNewLayer("Croatia:wms_cadastralParcels", serviceCadastralParcel , ZIndexes.overlay , 1.0 )]);
+  WMSLayerTogglers.wms_hok5 = addLayerToggler(groupTogglerHRV, "Base Map (HOK5)", [addNewLayer("Croatia:wms_hok5", service_wms_hok, ZIndexes.base, 1.0)]);
+  WMSLayerTogglers.wms_orthophoto = addLayerToggler(groupTogglerHRV, "Orthophoto 2014-16", [addNewLayer("Croatia:wms_orthophoto", service_wms_orthophoto, ZIndexes.base, 0.5)]);
+  WMSLayerTogglers.wms_orthophoto = addLayerToggler(groupTogglerHRV, "Cadastral Zoning", [addNewLayer("Croatia:wms_cadastralZoning", serviceCadastralZoning, ZIndexes.overlay, 1.0)]);
+  WMSLayerTogglers.wms_orthophoto = addLayerToggler(groupTogglerHRV, "Cadastral Parcels", [addNewLayer("Croatia:wms_cadastralParcels", serviceCadastralParcel, ZIndexes.overlay, 1.0)]);
 
   var isLoaded = false;
   window.addEventListener(
@@ -149,6 +150,9 @@ var serviceCadastralParcel = {
   W.map.events.register("addlayer", null, setZOrdering(WMSLayerTogglers));
   W.map.events.register("removelayer", null, setZOrdering(WMSLayerTogglers));
   W.map.events.register("moveend", null, setZOrdering(WMSLayerTogglers));
+
+  if (debug) console.log(`${scriptName}: Croatian WMS layers Script Loaded`);
+  
 }
 
 /**********************************************************************************************
@@ -170,6 +174,8 @@ options (Object, optional): This optional object provides additional configurati
 ***************************************************************************************************/
 
 function addNewLayer(id, service, zIndex = 0, opacity = 1) {
+  if (debug) console.log(`${scriptName}: addNewKayer() called for: ${id}`);
+
   var newLayer = {};
 
   // Determine if CRS or SRS should be used
@@ -201,7 +207,9 @@ function addNewLayer(id, service, zIndex = 0, opacity = 1) {
       projection: new OL.Projection(coordinateSystemValue), //EPSG:3765 is specifically designed for use in Croatia.
     }
   );
-  console.log(newLayer);
+
+  if (debug) console.log(`${scriptName}: addNewKayer() newLayer:`, newLayer);
+
   return newLayer;
 }
 
@@ -241,6 +249,9 @@ function addGroupToggler(isDefault, layerSwitcherGroupItemName, layerGroupVisibl
     group.appendChild(togglerChildrenList);
     layerGroupsList.appendChild(group);
   }
+  
+  if (debug) console.log(`${scriptName}: Group Toggler created for ${layerGroupVisibleName}`);
+
   return group;
 }
 
@@ -265,6 +276,7 @@ function addLayerToggler(groupToggler, layerName, layerArray) {
     layerArray[i].layer.name = layerName + (layerArray.length > 1 ? " " + i : "");
   }
   registerKeyShortcut("WMS: " + layerName, layerKeyShortcutEventHandler(layerGroupCheckbox, togglerCheckbox), layerShortcut);
+  if (debug) console.log(`${scriptName}: Layer Toggler created for ${layerName}`);
   return layerToggler;
 }
 
@@ -341,3 +353,4 @@ function setZOrdering(layerTogglers) {
 }
 
 document.addEventListener("wme-map-data-loaded", init, { once: true });
+})();
