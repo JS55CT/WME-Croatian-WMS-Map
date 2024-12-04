@@ -2,7 +2,7 @@
 // @name             Croatian WMS layers
 // @namespace        https://greasyfork.org/en/users/1366579-js55ct
 // @description      Displays layers from Croatian WMS services in WME
-// @version          2024.12.04.02
+// @version          2024.12.04.03
 // @author           JS55CT
 // @match            https://*.waze.com/*/editor*
 // @match            https://*.waze.com/editor
@@ -76,6 +76,41 @@ function init(e) {
     tileSize: new OL.Size(512, 512),
   };
 
+  var service_wms_dgu_tk25 = {
+    type: "WMS",
+    url: "https://geoportal.dgu.hr/wms",
+    params: {
+      SERVICE: "WMS",
+      VERSION: "1.3.0",
+      REQUEST: "GetMap",
+      FORMAT: "image/png",
+      TRANSPARENT: "true",
+      LAYERS: "TK25",
+      CRS: "EPSG:3765",
+      STYLES: "raster", 
+    },
+    attribution: "WMS Državne geodetske uprave RH - Topografska karta 1:25000",
+    tileSize: new OL.Size(512, 512),
+  };
+
+  var service_katastarska_opcina = {
+    type: "WMS",
+    url: "http://geoportal.dgu.hr/services/auth/rpj/ows?SERVICE=WMS&authKey=c24b3b67-05a2-4178-9cd4-f2e9cdb5ea59&",
+    params: {
+      SERVICE: "WMS",
+      VERSION: "1.3.0",
+      REQUEST: "GetMap",
+      FORMAT: "image/png",
+      TRANSPARENT: "true",
+      LAYERS: "katastarska_opcina", 
+      CRS: "EPSG:3857", 
+      STYLES: "rpj_katastarska_opcina",
+    },
+    attribution: "WMS servis Državne geodetske uprave - Katastarska Općina",
+    comment: "Katastralne općine Hrvatske"
+  };
+
+
   var serviceCadastralZoning = {
     type: "WMS",
     url: "https://api.uredjenazemlja.hr/services/inspire/cp_wms/wms",
@@ -110,12 +145,50 @@ function init(e) {
     tileSize: new OL.Size(512, 512),
   };
 
+  //House Numbers
+  var service_kucni_broj = {
+    type: "WMS",
+    url: "http://geoportal.dgu.hr/services/auth/rpj/ows?SERVICE=WMS&authKey=c24b3b67-05a2-4178-9cd4-f2e9cdb5ea59&",
+    params: {
+      SERVICE: "WMS",
+      VERSION: "1.3.0",
+      REQUEST: "GetMap",
+      FORMAT: "image/png",
+      TRANSPARENT: "true", 
+      LAYERS: "kucni_broj",
+      CRS: "EPSG:3857",
+      STYLES: "kucni_broj",
+    },
+    attribution: "WMS servis Državne geodetske uprave - Kucni Broj",
+    comment: "House numbers layer"
+  };
+
+  // Streets
+  var service_ulica = {
+    type: "WMS",
+    url: "http://geoportal.dgu.hr/services/auth/rpj/ows?SERVICE=WMS&authKey=c24b3b67-05a2-4178-9cd4-f2e9cdb5ea59&",
+    params: {
+      SERVICE: "WMS",
+      VERSION: "1.3.0",
+      REQUEST: "GetMap",
+      FORMAT: "image/png",
+      TRANSPARENT: "true", 
+      LAYERS: "ulica",
+      CRS: "EPSG:3857",
+      STYLES: "ulica",
+    },
+    attribution: "WMS servis Državne geodetske uprave - ulica",
+    comment: "Street Names"
+  };
+
+
+
   var service_wms_orthophoto_2022 = {
     type: "WMS",
     url: "https://geoportal.dgu.hr/services/inspire/orthophoto_2022/ows",
     params: {
       SERVICE: "WMS",
-      VERSION: "1.3.0", // Use the correct version
+      VERSION: "1.3.0",
       REQUEST: "GetMap",
       FORMAT: "image/png",
       TRANSPARENT: "true",
@@ -132,7 +205,7 @@ function init(e) {
     url: "https://geoportal.dgu.hr/services/inspire/orthophoto_2021/ows",
     params: {
       SERVICE: "WMS",
-      VERSION: "1.3.0", // Use the correct version
+      VERSION: "1.3.0",
       REQUEST: "GetMap",
       FORMAT: "image/png",
       TRANSPARENT: "true",
@@ -149,7 +222,7 @@ function init(e) {
     url: "https://geoportal.dgu.hr/services/inspire/orthophoto_2020/ows",
     params: {
       SERVICE: "WMS",
-      VERSION: "1.3.0", // Use the correct version
+      VERSION: "1.3.0",
       REQUEST: "GetMap",
       FORMAT: "image/png",
       TRANSPARENT: "true",
@@ -198,15 +271,18 @@ function init(e) {
   //menu
   var WMSLayerTogglers = {};
   // Add WMS layers
-  WMSLayerTogglers.wms_hok5 = addLayerToggler(groupTogglerHRV, "Base Map (HOK)", [addNewLayer("Croatia:wms_dgu_hok", service_wms_dgu_hok, ZIndexes.base, 0.6)]);
-  WMSLayerTogglers.wms_hok5 = addLayerToggler(groupTogglerHRV, "Base Map (Topographic)", [addNewLayer("Croatia:wms_dgu_tk25", service_wms_dgu_tk25, ZIndexes.base, 0.6)]);
-  WMSLayerTogglers.wms_orthophoto = addLayerToggler(groupTogglerHRV, "Cadastral Zoning", [addNewLayer("Croatia:wms_cadastralZoning", serviceCadastralZoning, ZIndexes.overlay, 1.0)]);
-  WMSLayerTogglers.wms_orthophoto = addLayerToggler(groupTogglerHRV, "Cadastral Parcels", [addNewLayer("Croatia:wms_cadastralParcels", serviceCadastralParcel, ZIndexes.overlay, 1.0)]);
-  WMSLayerTogglers.wms_orthophoto = addLayerToggler(groupTogglerHRV, "Orthophoto 2022", [addNewLayer("Croatia:wms_orthophoto_2022", service_wms_orthophoto_2022, ZIndexes.base, 0.6)]);
-  WMSLayerTogglers.wms_orthophoto = addLayerToggler(groupTogglerHRV, "Orthophoto 2021", [addNewLayer("Croatia:wms_orthophoto_2021", service_wms_orthophoto_2021, ZIndexes.base, 0.6)]);
-  WMSLayerTogglers.wms_orthophoto = addLayerToggler(groupTogglerHRV, "Orthophoto 2020", [addNewLayer("Croatia:wms_orthophoto_2020", service_wms_orthophoto_2020, ZIndexes.base, 0.6)]);
-  WMSLayerTogglers.wms_orthophoto = addLayerToggler(groupTogglerHRV, "Orthophoto 2014-16", [addNewLayer("Croatia:wms_orthophoto_2014_2016", service_wms_orthophoto_2014_2016, ZIndexes.base, 0.6)]);
-  WMSLayerTogglers.wms_orthophoto = addLayerToggler(groupTogglerHRV, "Orthophoto ( Zagreb & Krapina-Zagorje)", [addNewLayer("Croatia:wms_orthophoto_Zagreb", service_wms_orthophoto_Zagreb, ZIndexes.base, 0.6)]);
+  WMSLayerTogglers.wms_hok5 = addLayerToggler(groupTogglerHRV, "Base Map (HOK)", [addNewLayer("Croatia:wms_dgu_hok", service_wms_dgu_hok , ZIndexes.base, 0.6)]);
+  WMSLayerTogglers.wms_hok5 = addLayerToggler(groupTogglerHRV, "Base Map (Topographic)", [addNewLayer("Croatia:wms_dgu_tk25", service_wms_dgu_tk25 , ZIndexes.base, 0.6)]);
+  WMSLayerTogglers.wms_orthophoto = addLayerToggler(groupTogglerHRV, "Općina (Municipality)", [addNewLayer("Croatia:wms_katastarska_opcina", service_katastarska_opcina , ZIndexes.overlay, 1.0)]); //notworking
+  WMSLayerTogglers.wms_orthophoto = addLayerToggler(groupTogglerHRV, "Cadastral Zoning", [addNewLayer("Croatia:wms_cadastralZoning", serviceCadastralZoning , ZIndexes.overlay, 1.0)]);
+  WMSLayerTogglers.wms_orthophoto = addLayerToggler(groupTogglerHRV, "Cadastral Parcels", [addNewLayer("Croatia:wms_cadastralParcels", serviceCadastralParcel , ZIndexes.overlay, 1.0)]);
+  WMSLayerTogglers.wms_orthophoto = addLayerToggler(groupTogglerHRV, "Ulica (Street Name)", [addNewLayer("Croatia:wms_ulica", service_ulica , ZIndexes.overlay, 1.0)]);
+  WMSLayerTogglers.wms_orthophoto = addLayerToggler(groupTogglerHRV, "Kucni Broj (House #)", [addNewLayer("Croatia:wms_kucni_broj", service_kucni_broj , ZIndexes.overlay, 1.0)]);
+  WMSLayerTogglers.wms_orthophoto = addLayerToggler(groupTogglerHRV, "Orthophoto 2022", [addNewLayer("Croatia:wms_orthophoto_2022", service_wms_orthophoto_2022 , ZIndexes.base, 0.6)]);
+  WMSLayerTogglers.wms_orthophoto = addLayerToggler(groupTogglerHRV, "Orthophoto 2021", [addNewLayer("Croatia:wms_orthophoto_2021", service_wms_orthophoto_2021 , ZIndexes.base, 0.6)]);
+  WMSLayerTogglers.wms_orthophoto = addLayerToggler(groupTogglerHRV, "Orthophoto 2020", [addNewLayer("Croatia:wms_orthophoto_2020", service_wms_orthophoto_2020 , ZIndexes.base, 0.6)]);
+  WMSLayerTogglers.wms_orthophoto = addLayerToggler(groupTogglerHRV, "Orthophoto 2014-16", [addNewLayer("Croatia:wms_orthophoto_2014_2016", service_wms_orthophoto_2014_2016 , ZIndexes.base, 0.6)]);
+  WMSLayerTogglers.wms_orthophoto = addLayerToggler(groupTogglerHRV, "Orthophoto ( Zagreb & Krapina-Zagorje)", [addNewLayer("Croatia:wms_orthophoto_Zagreb", service_wms_orthophoto_Zagreb , ZIndexes.base, 0.6)]);
 
   var isLoaded = false;
   window.addEventListener(
