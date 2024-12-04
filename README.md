@@ -1,6 +1,6 @@
 # Croatian WMS Layers
 
-![Version](https://img.shields.io/badge/version-2024.12.03.00-blue)
+![Version](https://img.shields.io/badge/version-2024.12.04.01-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
 ## Overview
@@ -38,7 +38,7 @@ The script is set to run on the following domains:
 This script uses the following configurations for WMS services:
 
 - **Base Map (HOK5):** Hrvatska osnovna karta WMS service.
-- **Orthophoto 2014-2016:** GeoPortal DGU service.
+- **Orthophoto for 2022, 2021, 2020, 2014-2016:** GeoPortal DGU service.
 - **Cadastral Zoning:** Katastarske čestice i katastarske općine WMS.
 - **Cadastral Parcels:** Katastarske čestice i katastarske općine WMS.
 
