@@ -2,7 +2,7 @@
 // @name             Croatian WMS layers
 // @namespace        https://greasyfork.org/en/users/1366579-js55ct
 // @description      Displays layers from Croatian WMS services in WME
-// @version          2024.12.04.01
+// @version          2024.12.04.02
 // @author           JS55CT
 // @match            https://*.waze.com/*/editor*
 // @match            https://*.waze.com/editor
@@ -41,21 +41,38 @@ function init(e) {
 
   // where .params.VERSION >= "1.3.0" use "CRS:" else use  "SRS:"" for the Coordinate System Value
   // New Croatian WMS service definition
-  var service_wms_hok = {
+
+  var service_wms_dgu_hok = {
     type: "WMS",
-    url: "https://geoportal.dgu.hr/services/hok/wms",
+    url: "https://geoportal.dgu.hr/wms",
     params: {
       SERVICE: "WMS",
       VERSION: "1.3.0",
       REQUEST: "GetMap",
       FORMAT: "image/png",
       TRANSPARENT: "true",
-      LAYERS: "HOK5",
+      LAYERS: "HOK",
       CRS: "EPSG:3765",
       STYLES: "raster", 
     },
-    attribution: "Hrvatska osnovna karta",
-    comment: "HOK Service",
+    attribution: "WMS Državne geodetske uprave RH - Hrvatska osnovna karta",
+    tileSize: new OL.Size(512, 512),
+  };
+
+  var service_wms_dgu_tk25 = {
+    type: "WMS",
+    url: "https://geoportal.dgu.hr/wms",
+    params: {
+      SERVICE: "WMS",
+      VERSION: "1.3.0",
+      REQUEST: "GetMap",
+      FORMAT: "image/png",
+      TRANSPARENT: "true",
+      LAYERS: "TK25",
+      CRS: "EPSG:3765",
+      STYLES: "raster", 
+    },
+    attribution: "WMS Državne geodetske uprave RH - Topografska karta 1:25000",
     tileSize: new OL.Size(512, 512),
   };
 
@@ -76,7 +93,6 @@ function init(e) {
     tileSize: new OL.Size(512, 512),
   };
 
-  // Define the service information for CP.CadastralParcel
   var serviceCadastralParcel = {
     type: "WMS",
     url: "https://api.uredjenazemlja.hr/services/inspire/cp_wms/wms",
@@ -182,10 +198,10 @@ function init(e) {
   //menu
   var WMSLayerTogglers = {};
   // Add WMS layers
-  WMSLayerTogglers.wms_hok5 = addLayerToggler(groupTogglerHRV, "Base Map (HOK5)", [addNewLayer("Croatia:wms_hok5", service_wms_hok, ZIndexes.base, 0.6)]);
+  WMSLayerTogglers.wms_hok5 = addLayerToggler(groupTogglerHRV, "Base Map (HOK)", [addNewLayer("Croatia:wms_dgu_hok", service_wms_dgu_hok, ZIndexes.base, 0.6)]);
+  WMSLayerTogglers.wms_hok5 = addLayerToggler(groupTogglerHRV, "Base Map (Topographic)", [addNewLayer("Croatia:wms_dgu_tk25", service_wms_dgu_tk25, ZIndexes.base, 0.6)]);
   WMSLayerTogglers.wms_orthophoto = addLayerToggler(groupTogglerHRV, "Cadastral Zoning", [addNewLayer("Croatia:wms_cadastralZoning", serviceCadastralZoning, ZIndexes.overlay, 1.0)]);
   WMSLayerTogglers.wms_orthophoto = addLayerToggler(groupTogglerHRV, "Cadastral Parcels", [addNewLayer("Croatia:wms_cadastralParcels", serviceCadastralParcel, ZIndexes.overlay, 1.0)]);
-
   WMSLayerTogglers.wms_orthophoto = addLayerToggler(groupTogglerHRV, "Orthophoto 2022", [addNewLayer("Croatia:wms_orthophoto_2022", service_wms_orthophoto_2022, ZIndexes.base, 0.6)]);
   WMSLayerTogglers.wms_orthophoto = addLayerToggler(groupTogglerHRV, "Orthophoto 2021", [addNewLayer("Croatia:wms_orthophoto_2021", service_wms_orthophoto_2021, ZIndexes.base, 0.6)]);
   WMSLayerTogglers.wms_orthophoto = addLayerToggler(groupTogglerHRV, "Orthophoto 2020", [addNewLayer("Croatia:wms_orthophoto_2020", service_wms_orthophoto_2020, ZIndexes.base, 0.6)]);
