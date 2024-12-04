@@ -2,7 +2,7 @@
 // @name             Croatian WMS layers
 // @namespace        https://greasyfork.org/en/users/1366579-js55ct
 // @description      Displays layers from Croatian WMS services in WME
-// @version          2024.12.03.02
+// @version          2024.12.04.01
 // @author           JS55CT
 // @match            https://*.waze.com/*/editor*
 // @match            https://*.waze.com/editor
@@ -33,12 +33,13 @@ function init(e) {
   OL = unsafeWindow.OpenLayers;
   I18n = unsafeWindow.I18n;
 
-  ZIndexes.base = W.map.olMap.Z_INDEX_BASE.Overlay + 20;
-  ZIndexes.overlay = W.map.olMap.Z_INDEX_BASE.Overlay + 100;
-  ZIndexes.popup = W.map.olMap.Z_INDEX_BASE.Popup + 100;
+  ZIndexes.base = W.map.olMap.Z_INDEX_BASE.Overlay + 10;
+  ZIndexes.overlay = W.map.olMap.Z_INDEX_BASE.Overlay + 150;
+  ZIndexes.popup = W.map.olMap.Z_INDEX_BASE.Popup + 150;
 
   var groupTogglerHRV = addGroupToggler(false, "layer-switcher-group_hok", "WMS Croatia");
 
+  // where .params.VERSION >= "1.3.0" use "CRS:" else use  "SRS:"" for the Coordinate System Value
   // New Croatian WMS service definition
   var service_wms_hok = {
     type: "WMS",
@@ -50,27 +51,11 @@ function init(e) {
       FORMAT: "image/png",
       TRANSPARENT: "true",
       LAYERS: "HOK5",
-      CRS: "EPSG:3765", //EPSG:4326
+      CRS: "EPSG:3765",
+      STYLES: "raster", 
     },
     attribution: "Hrvatska osnovna karta",
     comment: "HOK Service",
-    tileSize: new OL.Size(512, 512),
-  };
-
-  var service_wms_orthophoto = {
-    type: "WMS",
-    url: "https://geoportal.dgu.hr/services/inspire/orthophoto_2014-2016/wms",
-    params: {
-      SERVICE: "WMS",
-      VERSION: "1.3.0", // Use the correct version
-      REQUEST: "GetMap",
-      FORMAT: "image/png",
-      TRANSPARENT: "true",
-      LAYERS: "OI.OrthoImagery",
-      CRS: "EPSG:3765", // Use a supported CRS
-    },
-    attribution: "GeoPortal DGU - Digitalni ortofoto 2014-2016",
-    comment: "Orthophoto 2014-2016 WMS Service",
     tileSize: new OL.Size(512, 512),
   };
 
@@ -84,7 +69,7 @@ function init(e) {
       FORMAT: "image/png",
       TRANSPARENT: "true",
       LAYERS: "CP.CadastralZoning",
-      CRS: "EPSG:3765", //"EPSG:4326", // Defaulting to EPSG:4326 as indicated
+      CRS: "EPSG:3765", 
       STYLES: "CP.CadastralZoning.Default",
     },
     attribution: "Katastarske čestice i katastarske općine - WMS",
@@ -102,20 +87,110 @@ function init(e) {
       FORMAT: "image/png",
       TRANSPARENT: "true",
       LAYERS: "CP.CadastralParcel",
-      CRS: "EPSG:3765", //"EPSG:4326", // Defaulting to EPSG:4326 as indicated
+      CRS: "EPSG:3765", 
       STYLES: "CP.CadastralParcel.Default",
     },
     attribution: "Katastarske čestice i katastarske općine - WMS",
     tileSize: new OL.Size(512, 512),
   };
 
+  var service_wms_orthophoto_2022 = {
+    type: "WMS",
+    url: "https://geoportal.dgu.hr/services/inspire/orthophoto_2022/ows",
+    params: {
+      SERVICE: "WMS",
+      VERSION: "1.3.0", // Use the correct version
+      REQUEST: "GetMap",
+      FORMAT: "image/png",
+      TRANSPARENT: "true",
+      LAYERS: "OI.OrthoimageCoverage",
+      CRS: "EPSG:3765",
+      STYLES: "raster",
+    },
+    attribution: "Digitalni ortofoto u mjerilu 1:5000_2022. godina",
+    tileSize: new OL.Size(512, 512),
+  };
+
+  var service_wms_orthophoto_2021 = {
+    type: "WMS",
+    url: "https://geoportal.dgu.hr/services/inspire/orthophoto_2021/ows",
+    params: {
+      SERVICE: "WMS",
+      VERSION: "1.3.0", // Use the correct version
+      REQUEST: "GetMap",
+      FORMAT: "image/png",
+      TRANSPARENT: "true",
+      LAYERS: "OI.OrthoimageCoverage",
+      CRS: "EPSG:3765",
+      STYLES: "raster",
+    },
+    attribution: "Digitalni ortofoto u mjerilu 1:5000_2021. godina",
+    tileSize: new OL.Size(512, 512),
+  };
+
+  var service_wms_orthophoto_2020 = {
+    type: "WMS",
+    url: "https://geoportal.dgu.hr/services/inspire/orthophoto_2020/ows",
+    params: {
+      SERVICE: "WMS",
+      VERSION: "1.3.0", // Use the correct version
+      REQUEST: "GetMap",
+      FORMAT: "image/png",
+      TRANSPARENT: "true",
+      LAYERS: "OI.OrthoimageCoverage",
+      CRS: "EPSG:3765",
+      STYLES: "raster",
+    },
+    attribution: "Digitalni ortofoto u mjerilu 1:5000_2020. godina",
+    tileSize: new OL.Size(512, 512),
+  };
+
+  var service_wms_orthophoto_2014_2016 = {
+    type: "WMS",
+    url: "https://geoportal.dgu.hr/services/inspire/orthophoto_2014-2016/wms",
+    params: {
+      SERVICE: "WMS",
+      VERSION: "1.3.0",
+      REQUEST: "GetMap",
+      FORMAT: "image/png",
+      TRANSPARENT: "true",
+      LAYERS: "OI.OrthoImagery",
+      CRS: "EPSG:3765",
+      STYLES: "raster",
+    },
+    attribution: "GeoPortal DGU - Digitalni ortofoto 2014-2016",
+    tileSize: new OL.Size(512, 512),
+  };
+
+  var service_wms_orthophoto_Zagreb = {
+    type: "WMS",
+    url: "https://geoportal.dgu.hr/services/inspire/orthophoto_1000/wms",
+    params: {
+      SERVICE: "WMS",
+      VERSION: "1.3.0",
+      REQUEST: "GetMap",
+      FORMAT: "image/png",
+      TRANSPARENT: "true",
+      LAYERS: "OI.OrthoimageCoverage",
+      CRS: "EPSG:3765",
+      STYLES: "OI.OrthoimageCoverage.Default",
+    },
+    attribution: "GeoPortal DGU - Digitalni ortofoto 2014-2016",
+    tileSize: new OL.Size(512, 512),
+  };
+
   //menu
   var WMSLayerTogglers = {};
   // Add WMS layers
-  WMSLayerTogglers.wms_hok5 = addLayerToggler(groupTogglerHRV, "Base Map (HOK5)", [addNewLayer("Croatia:wms_hok5", service_wms_hok, ZIndexes.base, 1.0)]);
-  WMSLayerTogglers.wms_orthophoto = addLayerToggler(groupTogglerHRV, "Orthophoto 2014-16", [addNewLayer("Croatia:wms_orthophoto", service_wms_orthophoto, ZIndexes.base, 0.5)]);
+  WMSLayerTogglers.wms_hok5 = addLayerToggler(groupTogglerHRV, "Base Map (HOK5)", [addNewLayer("Croatia:wms_hok5", service_wms_hok, ZIndexes.base, 0.6)]);
   WMSLayerTogglers.wms_orthophoto = addLayerToggler(groupTogglerHRV, "Cadastral Zoning", [addNewLayer("Croatia:wms_cadastralZoning", serviceCadastralZoning, ZIndexes.overlay, 1.0)]);
   WMSLayerTogglers.wms_orthophoto = addLayerToggler(groupTogglerHRV, "Cadastral Parcels", [addNewLayer("Croatia:wms_cadastralParcels", serviceCadastralParcel, ZIndexes.overlay, 1.0)]);
+
+  WMSLayerTogglers.wms_orthophoto = addLayerToggler(groupTogglerHRV, "Orthophoto 2022", [addNewLayer("Croatia:wms_orthophoto_2022", service_wms_orthophoto_2022, ZIndexes.base, 0.6)]);
+  WMSLayerTogglers.wms_orthophoto = addLayerToggler(groupTogglerHRV, "Orthophoto 2021", [addNewLayer("Croatia:wms_orthophoto_2021", service_wms_orthophoto_2021, ZIndexes.base, 0.6)]);
+  WMSLayerTogglers.wms_orthophoto = addLayerToggler(groupTogglerHRV, "Orthophoto 2020", [addNewLayer("Croatia:wms_orthophoto_2020", service_wms_orthophoto_2020, ZIndexes.base, 0.6)]);
+  WMSLayerTogglers.wms_orthophoto = addLayerToggler(groupTogglerHRV, "Orthophoto 2014-16", [addNewLayer("Croatia:wms_orthophoto_2014_2016", service_wms_orthophoto_2014_2016, ZIndexes.base, 0.6)]);
+  WMSLayerTogglers.wms_orthophoto = addLayerToggler(groupTogglerHRV, "Orthophoto ( Zagreb & Krapina-Zagorje)", [addNewLayer("Croatia:wms_orthophoto_Zagreb", service_wms_orthophoto_Zagreb, ZIndexes.base, 0.6)]);
 
   var isLoaded = false;
   window.addEventListener(
