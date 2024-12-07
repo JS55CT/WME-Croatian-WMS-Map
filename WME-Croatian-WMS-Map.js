@@ -2,7 +2,7 @@
 // @name             Croatian WMS layers
 // @namespace        https://greasyfork.org/en/users/1366579-js55ct
 // @description      Displays layers from Croatian WMS services in WME
-// @version          2024.12.04.04
+// @version          2024.12.07.01
 // @author           JS55CT
 // @match            https://*.waze.com/*/editor*
 // @match            https://*.waze.com/editor
@@ -57,23 +57,6 @@
         STYLES: "raster",
       },
       attribution: "WMS Državne geodetske uprave RH - Hrvatska osnovna karta",
-      tileSize: new OL.Size(512, 512),
-    };
-
-    var service_wms_dgu_tk25 = {
-      type: "WMS",
-      url: "https://geoportal.dgu.hr/wms",
-      params: {
-        SERVICE: "WMS",
-        VERSION: "1.3.0",
-        REQUEST: "GetMap",
-        FORMAT: "image/png",
-        TRANSPARENT: "true",
-        LAYERS: "TK25",
-        CRS: "EPSG:3765",
-        STYLES: "raster",
-      },
-      attribution: "WMS Državne geodetske uprave RH - Topografska karta 1:25000",
       tileSize: new OL.Size(512, 512),
     };
 
