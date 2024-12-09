@@ -2,7 +2,7 @@
 // @name             Croatian WMS layers
 // @namespace        https://greasyfork.org/en/users/1366579-js55ct
 // @description      Displays layers from Croatian WMS services in WME
-// @version          2024.12.07.01
+// @version          2024.12.09.01
 // @author           JS55CT
 // @match            https://*.waze.com/*/editor*
 // @match            https://*.waze.com/editor
@@ -39,6 +39,12 @@
     ZIndexes.popup = W.map.olMap.Z_INDEX_BASE.Popup + 150;
 
     var groupTogglerHRV = addGroupToggler(false, "layer-switcher-group_hok", "WMS Croatia");
+
+    var keyList = {
+      katastarska_opcina: "c24b3b67-05a2-4178-9cd4-f2e9cdb5ea59",
+      kucni_broj: "c24b3b67-05a2-4178-9cd4-f2e9cdb5ea59",
+      ulica: "c24b3b67-05a2-4178-9cd4-f2e9cdb5ea59",
+    };
 
     // where .params.VERSION >= "1.3.0" use "CRS:" else use  "SRS:"" for the Coordinate System Value
     // New Croatian WMS service definition
@@ -79,7 +85,7 @@
 
     var service_katastarska_opcina = {
       type: "WMS",
-      url: "http://geoportal.dgu.hr/services/auth/rpj/ows?SERVICE=WMS&authKey=c24b3b67-05a2-4178-9cd4-f2e9cdb5ea59&",
+      url: `http://geoportal.dgu.hr/services/auth/rpj/ows?SERVICE=WMS&authKey=${katastarska_opcina}&`,
       params: {
         SERVICE: "WMS",
         VERSION: "1.3.0",
@@ -131,7 +137,7 @@
     //House Numbers
     var service_kucni_broj = {
       type: "WMS",
-      url: "http://geoportal.dgu.hr/services/auth/rpj/ows?SERVICE=WMS&authKey=c24b3b67-05a2-4178-9cd4-f2e9cdb5ea59&",
+      url: `http://geoportal.dgu.hr/services/auth/rpj/ows?SERVICE=WMS&authKey=${keyList.kucni_broj}&`,
       params: {
         SERVICE: "WMS",
         VERSION: "1.3.0",
@@ -149,7 +155,7 @@
     // Streets
     var service_ulica = {
       type: "WMS",
-      url: "http://geoportal.dgu.hr/services/auth/rpj/ows?SERVICE=WMS&authKey=c24b3b67-05a2-4178-9cd4-f2e9cdb5ea59&",
+      url: `http://geoportal.dgu.hr/services/auth/rpj/ows?SERVICE=WMS&authKey=${keyList.ulica}&`,
       params: {
         SERVICE: "WMS",
         VERSION: "1.3.0",
