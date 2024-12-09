@@ -85,7 +85,7 @@
 
     var service_katastarska_opcina = {
       type: "WMS",
-      url: `http://geoportal.dgu.hr/services/auth/rpj/ows?SERVICE=WMS&authKey=${katastarska_opcina}&`,
+      url: `http://geoportal.dgu.hr/services/auth/rpj/ows?SERVICE=WMS&authKey=${keyList.katastarska_opcina}&`,
       params: {
         SERVICE: "WMS",
         VERSION: "1.3.0",
