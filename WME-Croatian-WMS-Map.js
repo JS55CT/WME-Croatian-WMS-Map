@@ -2,7 +2,7 @@
 // @name             Croatian WMS layers
 // @namespace        https://greasyfork.org/en/users/1366579-js55ct
 // @description      Displays layers from Croatian WMS services in WME
-// @version          2024.12.09.01
+// @version          2024.12.09.02
 // @author           JS55CT
 // @match            https://*.waze.com/*/editor*
 // @match            https://*.waze.com/editor
