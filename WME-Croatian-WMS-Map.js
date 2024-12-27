@@ -2,7 +2,7 @@
 // @name             Croatian WMS layers
 // @namespace        https://greasyfork.org/en/users/1366579-js55ct
 // @description      Displays layers from Croatian WMS services in WME
-// @version          2024.12.27.01
+// @version          2024.12.27.02
 // @author           JS55CT
 // @match            https://*.waze.com/*/editor*
 // @match            https://*.waze.com/editor
@@ -46,11 +46,11 @@
       naselje: "c24b3b67-05a2-4178-9cd4-f2e9cdb5ea59",
       kucni_broj: "c24b3b67-05a2-4178-9cd4-f2e9cdb5ea59",
       ulica: "c24b3b67-05a2-4178-9cd4-f2e9cdb5ea59",
+      new_cestice: "442AE92E506D8E9CFE84F11465F51044",
     };
 
     // where .params.VERSION >= "1.3.0" use "CRS:" else use  "SRS:"" for the Coordinate System Value
     // New Croatian WMS service definition
-
 
     var service_wms_dgu_hok = {
       type: "WMS",
@@ -200,11 +200,45 @@
         FORMAT: "image/png",
         TRANSPARENT: "true",
         LAYERS: "ulica",
-        CRS: "EPSG:3857",
+        CRS: "EPSG:3765",
         STYLES: "ulica",
       },
       attribution: "WMS servis Državne geodetske uprave - ulica",
       comment: "Street Names",
+    };
+
+    var service_RoadTransportNetwork_RoadLink = {
+      type: "WMS",
+      url: `https://geoportal.dgu.hr/services/inspire/tn/ows?SERVICE=WMS&`,
+      params: {
+        SERVICE: "WMS",
+        VERSION: "1.3.0",
+        REQUEST: "GetMap",
+        FORMAT: "image/png",
+        TRANSPARENT: "true",
+        LAYERS: "TN.RoadTransportNetwork.RoadLink",
+        CRS: "EPSG:3765",
+        STYLES: "",
+      },
+      attribution: "Državna geodetska uprava Republike Hrvatske",
+      comment: "Mrežna usluga pregleda (WMS) za INSPIRE temu Prometne mreže koja je nastala temeljem službenog skupa podataka Državne geodetske uprave. Mrežna usluga/podaci su dostupni za cijelo područje Republike Hrvatske.",
+    };
+
+    var service_RoadTransportNetwork_RoadArea = {
+      type: "WMS",
+      url: `https://geoportal.dgu.hr/services/inspire/tn/ows?SERVICE=WMS&`,
+      params: {
+        SERVICE: "WMS",
+        VERSION: "1.3.0",
+        REQUEST: "GetMap",
+        FORMAT: "image/png",
+        TRANSPARENT: "true",
+        LAYERS: "TN.RoadTransportNetwork.RoadArea",
+        CRS: "EPSG:3765",
+        STYLES: "",
+      },
+      attribution: "Državna geodetska uprava Republike Hrvatske",
+      comment: "Mrežna usluga pregleda (WMS) za INSPIRE temu Prometne mreže koja je nastala temeljem službenog skupa podataka Državne geodetske uprave. Mrežna usluga/podaci su dostupni za cijelo područje Republike Hrvatske.",
     };
 
     var service_wms_orthophoto_2022 = {
@@ -300,7 +334,11 @@
     WMSLayerTogglers.wms_naselje = addLayerToggler(groupTogglerHRV, "Naselje (Settlement)", [addNewLayer("Croatia:wms_naselje", service_naselje, ZIndexes.overlay, 1.0)]);
     WMSLayerTogglers.wms_cadastralZoning = addLayerToggler(groupTogglerHRV, "Cadastral Zoning", [addNewLayer("Croatia:wms_cadastralZoning", service_CadastralZoning, ZIndexes.overlay, 1.0)]);
     WMSLayerTogglers.wms_cadastralParcels = addLayerToggler(groupTogglerHRV, "Cadastral Parcels", [addNewLayer("Croatia:wms_cadastralParcels", service_CadastralParcel, ZIndexes.overlay, 1.0)]);
+        
     WMSLayerTogglers.wms_ulica = addLayerToggler(groupTogglerHRV, "Ulica (Street Name)", [addNewLayer("Croatia:wms_ulica", service_ulica, ZIndexes.overlay, 1.0)]);
+    WMSLayerTogglers.RoadTransportNetwork_RoadLink = addLayerToggler(groupTogglerHRV, "Središnja linija ceste (Road Centerlines)", [addNewLayer("Croatia:wms_RoadTransportNetwork_RoadLink", service_RoadTransportNetwork_RoadLink, ZIndexes.overlay, 1.0)]);
+    WMSLayerTogglers.RoadTransportNetwork_RoadArea = addLayerToggler(groupTogglerHRV, "Područje ceste (Road Area)", [addNewLayer("Croatia:wms_RoadTransportNetwork_RoadArea", service_RoadTransportNetwork_RoadArea, ZIndexes.overlay, 0.8)]);
+
     WMSLayerTogglers.wms_kucni_broj = addLayerToggler(groupTogglerHRV, "Kucni Broj (House #)", [addNewLayer("Croatia:wms_kucni_broj", service_kucni_broj, ZIndexes.overlay, 1.0)]);
     WMSLayerTogglers.wms_orthophoto_2022 = addLayerToggler(groupTogglerHRV, "Orthophoto 2022", [addNewLayer("Croatia:wms_orthophoto_2022", service_wms_orthophoto_2022, ZIndexes.base, 0.6)]);
     WMSLayerTogglers.wms_orthophoto_2021 = addLayerToggler(groupTogglerHRV, "Orthophoto 2021", [addNewLayer("Croatia:wms_orthophoto_2021", service_wms_orthophoto_2021, ZIndexes.base, 0.6)]);
