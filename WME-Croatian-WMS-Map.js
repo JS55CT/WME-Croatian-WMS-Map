@@ -42,12 +42,15 @@
 
     var keyList = {
       katastarska_opcina: "c24b3b67-05a2-4178-9cd4-f2e9cdb5ea59",
+      grad_opcina: "c24b3b67-05a2-4178-9cd4-f2e9cdb5ea59",
+      naselje: "c24b3b67-05a2-4178-9cd4-f2e9cdb5ea59",
       kucni_broj: "c24b3b67-05a2-4178-9cd4-f2e9cdb5ea59",
       ulica: "c24b3b67-05a2-4178-9cd4-f2e9cdb5ea59",
     };
 
     // where .params.VERSION >= "1.3.0" use "CRS:" else use  "SRS:"" for the Coordinate System Value
     // New Croatian WMS service definition
+
 
     var service_wms_dgu_hok = {
       type: "WMS",
@@ -83,6 +86,23 @@
       tileSize: new OL.Size(512, 512),
     };
 
+    var service_grad_opcina = {
+      type: "WMS",
+      url: `http://geoportal.dgu.hr/services/auth/rpj/ows?SERVICE=WMS&authKey=${keyList.grad_opcina}&`,
+      params: {
+        SERVICE: "WMS",
+        VERSION: "1.3.0",
+        REQUEST: "GetMap",
+        FORMAT: "image/png",
+        TRANSPARENT: "true",
+        LAYERS: "jls",
+        CRS: "EPSG:3857",
+        STYLES: "grad_opcina",
+      },
+      attribution: "WMS servis Državne geodetske uprave - jls - grad opcina",
+      comment: "Katastralne općine Hrvatske",
+    };
+
     var service_katastarska_opcina = {
       type: "WMS",
       url: `http://geoportal.dgu.hr/services/auth/rpj/ows?SERVICE=WMS&authKey=${keyList.katastarska_opcina}&`,
@@ -94,13 +114,30 @@
         TRANSPARENT: "true",
         LAYERS: "katastarska_opcina",
         CRS: "EPSG:3857",
-        STYLES: "rpj_katastarska_opcina",
+        STYLES: "rpj_kat_opcina",
       },
       attribution: "WMS servis Državne geodetske uprave - Katastarska Općina",
       comment: "Katastralne općine Hrvatske",
     };
 
-    var serviceCadastralZoning = {
+    var service_naselje = {
+      type: "WMS",
+      url: `http://geoportal.dgu.hr/services/auth/rpj/ows?SERVICE=WMS&authKey=${keyList.naselje}&`,
+      params: {
+        SERVICE: "WMS",
+        VERSION: "1.3.0",
+        REQUEST: "GetMap",
+        FORMAT: "image/png",
+        TRANSPARENT: "true",
+        LAYERS: "naselje",
+        CRS: "EPSG:3857",
+        STYLES: "naselje",
+      },
+      attribution: "WMS servis Državne geodetske uprave - naselje",
+      comment: "Katastralne općine Hrvatske",
+    };
+
+    var service_CadastralZoning = {
       type: "WMS",
       url: "https://api.uredjenazemlja.hr/services/inspire/cp_wms/wms",
       params: {
@@ -117,7 +154,7 @@
       tileSize: new OL.Size(512, 512),
     };
 
-    var serviceCadastralParcel = {
+    var service_CadastralParcel = {
       type: "WMS",
       url: "https://api.uredjenazemlja.hr/services/inspire/cp_wms/wms",
       params: {
@@ -258,9 +295,11 @@
     // Add WMS layers
     WMSLayerTogglers.wms_dgu_hok = addLayerToggler(groupTogglerHRV, "Base Map (HOK)", [addNewLayer("Croatia:wms_dgu_hok", service_wms_dgu_hok, ZIndexes.base, 0.6)]);
     WMSLayerTogglers.wms_dgu_tk25 = addLayerToggler(groupTogglerHRV, "Base Map (Topographic)", [addNewLayer("Croatia:wms_dgu_tk25", service_wms_dgu_tk25, ZIndexes.base, 0.6)]);
-    WMSLayerTogglers.wms_katastarska_opcina = addLayerToggler(groupTogglerHRV, "Općina (Municipality)", [addNewLayer("Croatia:wms_katastarska_opcina", service_katastarska_opcina, ZIndexes.overlay, 1.0)]); //notworking
-    WMSLayerTogglers.wms_cadastralZoning = addLayerToggler(groupTogglerHRV, "Cadastral Zoning", [addNewLayer("Croatia:wms_cadastralZoning", serviceCadastralZoning, ZIndexes.overlay, 1.0)]);
-    WMSLayerTogglers.wms_cadastralParcels = addLayerToggler(groupTogglerHRV, "Cadastral Parcels", [addNewLayer("Croatia:wms_cadastralParcels", serviceCadastralParcel, ZIndexes.overlay, 1.0)]);
+    WMSLayerTogglers.wms_grad_opcina = addLayerToggler(groupTogglerHRV, "Grad Općina (City Municipality)", [addNewLayer("Croatia:wms_grad_opcina", service_grad_opcina, ZIndexes.overlay, 1.0)]);
+    WMSLayerTogglers.wms_katastarska_opcina = addLayerToggler(groupTogglerHRV, "Cadastral Općina (Municipality)", [addNewLayer("Croatia:wms_katastarska_opcina", service_katastarska_opcina, ZIndexes.overlay, 1.0)]);
+    WMSLayerTogglers.wms_naselje = addLayerToggler(groupTogglerHRV, "Naselje (Settlement)", [addNewLayer("Croatia:wms_naselje", service_naselje, ZIndexes.overlay, 1.0)]);
+    WMSLayerTogglers.wms_cadastralZoning = addLayerToggler(groupTogglerHRV, "Cadastral Zoning", [addNewLayer("Croatia:wms_cadastralZoning", service_CadastralZoning, ZIndexes.overlay, 1.0)]);
+    WMSLayerTogglers.wms_cadastralParcels = addLayerToggler(groupTogglerHRV, "Cadastral Parcels", [addNewLayer("Croatia:wms_cadastralParcels", service_CadastralParcel, ZIndexes.overlay, 1.0)]);
     WMSLayerTogglers.wms_ulica = addLayerToggler(groupTogglerHRV, "Ulica (Street Name)", [addNewLayer("Croatia:wms_ulica", service_ulica, ZIndexes.overlay, 1.0)]);
     WMSLayerTogglers.wms_kucni_broj = addLayerToggler(groupTogglerHRV, "Kucni Broj (House #)", [addNewLayer("Croatia:wms_kucni_broj", service_kucni_broj, ZIndexes.overlay, 1.0)]);
     WMSLayerTogglers.wms_orthophoto_2022 = addLayerToggler(groupTogglerHRV, "Orthophoto 2022", [addNewLayer("Croatia:wms_orthophoto_2022", service_wms_orthophoto_2022, ZIndexes.base, 0.6)]);

@@ -34,7 +34,7 @@ This script uses the following configurations for WMS services:
 - **Base Map (Topo):** WMS Državne geodetske uprave RH - Topografska karta 1:25000.
 - **Orthophoto for 2022, 2021, 2020, 2014-2016:** GeoPortal DGU service.
 - **Cadastral Zoning:** Katastarske čestice i katastarske općine WMS.
-- **Cadastral Parcels:** Katastarske čestice i katastarske općine WMS.
+- **Cadastral Parcels:** Katastarske čestice i katastarske cestice WMS.
 - **House Numbers:** WMS servis Državne geodetske uprave - Kucni Broj.
 - **Street Names:** WMS servis Državne geodetske uprave - ulica.
 
